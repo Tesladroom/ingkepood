@@ -1,13 +1,17 @@
 import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
 
 function AdminHome() {
     return (
     <div>
         <Link to="/admin/lisa">
-        <button className="btn btn-secondary">LISA TOODE</button>
+        <Button className="btn btn-secondary">LISA TOODE</Button>
         </Link>
         <Link to="/admin/tooted">
-        <button className="btn btn-secondary">HALDA TOOTEID</button>
+        <Button className="btn btn-secondary">HALDA TOOTEID</Button>
+        </Link>
+        <Link to="/admin/kategooriad">
+        <Button className="btn btn-secondary">KATEGOORIAD</Button>
         </Link>
     </div>)
     

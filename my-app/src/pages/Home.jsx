@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
+import { Row } from "react-bootstrap";
 import { ToastContainer, toast } from 'react-toastify';
+import { Button } from "react-bootstrap";
+
 
 function Home() {
     const [products, setProducts] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     const url = "https://chikar-20c2b-default-rtdb.europe-west1.firebasedatabase.app/products.json"
 
     useEffect(() => {
+        setIsLoading(true);
         fetch(url).then(respone => respone.json())
         .then(responseBody => {
             const productsFromDB = [];
@@ -13,7 +18,7 @@ function Home() {
                 productsFromDB.push(responseBody[key]);
             }
             setProducts(productsFromDB);
-            console.log(productsFromDB);
+            setIsLoading(false);
         })
     },[]);
 
@@ -66,18 +71,22 @@ function Home() {
     return (
     // näitab toodet esilehel
     <div>
-        <button onClick={() => onSortAZ()}>Sorteeri A-Z</button>
-        <button onClick={() => onSortZA()}>Sorteeri Z-A</button>
-        <button onClick={() => onSortPriceAsc()}>Sorteeri hind kasvavalt</button>
-        <button onClick={() => onSortPriceDesc()}>Sorteeri hind kahanevalt</button>
         
+        <Button onClick={() => onSortAZ()}>Sorteeri A-Z</Button>
+        <Button onClick={() => onSortZA()}>Sorteeri Z-A</Button>
+        <Button onClick={() => onSortPriceAsc()}>Sorteeri hind kasvavalt</Button>
+        <Button onClick={() => onSortPriceDesc()}>Sorteeri hind kahanevalt</Button><br />
+        { isLoading && <div className="spinner-wrapper">
+        <div className="lds-hourglass"><div></div><div></div></div>
+    </div>}
         {products.map(element =>
-            <div>
+            <div class="grid">
                <img className="product-img" src={element.imgSrc} alt="" /> 
                <div>{element.name}</div>
-               <div>{element.price}</div>
-               <button onClick={() => addToCart(element)}>Lisa {element.name} ostukorvi</button>
+               <div>{Number(element.price).toFixed(2)}</div>
+               <Button onClick={() => addToCart(element)}>Lisa {element.name} ostukorvi</Button>
                </div> )}
+               
                <ToastContainer />
     </div>)
     

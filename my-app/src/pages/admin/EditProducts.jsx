@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Button } from "react-bootstrap";
 
 function EditProducts() {
 
@@ -14,11 +15,12 @@ function EditProducts() {
     const {id} = useParams();
     const [products, setProducts] = useState([]);
     const [product, setProduct] = useState({});
-    const dbUrl = "https://chikar-20c2b-default-rtdb.europe-west1.firebasedatabase.app/products.json"
+    const [categories, setCategories] = useState([]);
+    const dbUrl = "https://chikar-20c2b-default-rtdb.europe-west1.firebasedatabase.app"
 
 
     useEffect(()=>{
-        fetch(dbUrl).then(response => response.json())
+        fetch(dbUrl + "/products.json").then(response => response.json())
         .then(body => {
             const newArray = [];
             for (const key in body) {
@@ -30,6 +32,18 @@ function EditProducts() {
             setProduct(productFound);
         })
     },[id]);
+
+    useEffect(() => {
+        fetch(dbUrl + "/categories.json").then(respone => respone.json())
+        .then(responseBody => {
+            const categoriesFromDB = [];
+            for (const key in responseBody) {
+                categoriesFromDB.push(responseBody[key]);
+            }
+            setCategories(categoriesFromDB);
+            console.log(categoriesFromDB);
+        })
+    },[]);
 
 
     function onEditProduct() {
@@ -66,14 +80,18 @@ return (
     <label>Pilt</label> <br />
     <input ref={imgSrcRef} defaultValue={product.imgSrc} type="text" required /> <br />
     <label>Kategooria</label> <br />
-    <input ref={categoryRef} defaultValue={product.category} type="text" required /> <br />
+    <select ref={categoryRef}>
+      {categories.map(element => <option value={element.name}>{element.name}</option>)}
+      
+
+    </select>
     <label>Kogus</label> <br />
     <input ref={stockRef} defaultValue={product.stock} type="number" required /> <br />
     <label>Kirjeldus</label> <br />
     <input ref={descriptionRef} defaultValue={product.description} type="text" required /> <br />
     <label>Aktiivne</label> <br />
     <input ref={activeRef} defaultChecked={product.isActive} type="checkbox" required /> <br />
-    <button onClick={() => onEditProduct()}>Muuda toode</button>
+    <Button onClick={() => onEditProduct()}>Muuda toode</Button>
     </div>}
 </div>)
 

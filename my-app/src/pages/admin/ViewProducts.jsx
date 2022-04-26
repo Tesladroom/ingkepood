@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
 
 function ViewProducts() {
  
@@ -32,7 +33,7 @@ function ViewProducts() {
                    <div>{element.isActive}</div>
                    <div>{element.stock}</div>
                    <Link to={"/admin/muuda/" + element.id}>
-                       <button>MUUDA</button>
+                       <Button>MUUDA</Button>
                    </Link>
                    </div> )}
         </div>)

@@ -9,6 +9,8 @@ import ViewProducts from './pages/admin/ViewProducts';
 import Cart from './pages/Cart';
 import Home from './pages/Home';
 import SingleProduct from './pages/SingleProduct';
+import Categories from './pages/admin/Categories';
+
 
 function App() {
   return (
@@ -22,7 +24,11 @@ function App() {
         <Route path="admin/lisa" exact element={ <AddProduct />} />
         <Route path="admin/muuda/:id" exact element={ <EditProducts />} />
         <Route path="admin/tooted" exact element={ <ViewProducts />} />
+        <Route path="admin/kategooriad" exact element={ <Categories />} />
       </Routes>
+
+    
+
     </div>
   );
 }

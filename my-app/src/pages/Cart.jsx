@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import cartStyles from "./css/Cart.module.css";
+import { Button } from "react-bootstrap";
 
 function Cart() {
   const [cartProducts, setCartProducts] = useState(getCartFromSS());
+ 
 
   function getCartFromSS() {
     const products = sessionStorage.getItem("products");
@@ -42,8 +44,49 @@ function Cart() {
     sessionStorage.setItem("products", JSON.stringify(cartProducts));
   }
 
+  function totalPrice() {
+    let totalSum = 0;
+    cartProducts.forEach(element => totalSum = totalSum + element.product.price * element.quantity);
+    return totalSum;
+  }
+
+  function pay() {
+    const data = {
+      "api_username": "92ddcfab96e34a5f",
+      "account_name": "EUR3D1",
+      "amount": totalPrice(),
+      "order_reference": Math.random() * 999999,
+      "nonce": "92ddcfab96e34a5f" + new Date() + Math.random() * 999999,
+      "timestamp": new Date(),
+      "customer_url": "www.neti.ee"
+    }
+
+
+    fetch("https://igw-demo.every-pay.com/api/v4/payments/oneoff",{
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Basic OTJkZGNmYWI5NmUzNGE1Zjo4Y2QxOWU5OWU5YzJjMjA4ZWU1NjNhYmY3ZDBlNGRhZA=="
+      }
+    }).then(response => response.json())
+    .then(body => window.location.href = body.payment_link);
+
+  }
+
+
+  
+
   return (
-  <div>
+    <div>
+    {cartProducts.length > 0 && 
+    <div>
+      <div>Kokku on {cartProducts.length} toodet ostukorvis</div>
+    </div>}
+    <div>
+    {cartProducts.length === 0 && <div>Ostukorv on tühi</div>}
+   
+      </div>
     { cartProducts.map(element => 
       <div className={cartStyles.cartProduct}>
         <img className={cartStyles.cartProductImg } src={element.product.imgSrc} alt="" />
@@ -54,10 +97,28 @@ function Cart() {
           <div className={cartStyles.cartProductQuantity}>Kogus:{element.quantity}</div>
           <img className={cartStyles.cartProductButton} onClick={() => increaseQuantity(element)} src="/cart/plus.png" alt="" />
         </div>
+        <div>{(element.product.price * element.quantity).toFixed(2)} € </div>
         <img className={cartStyles.cartProductButton} onClick={() => removeFromCart(element)} src="/cart/delete.png" alt="" />
       </div>) 
     }
+     
     <br />  <br />
+    
+   
+    {cartProducts.length > 0 && <div>
+      <div>KOKKU: {totalPrice()} €</div> 
+      <Button onClick ={() => pay()}>Maksa</Button>
+      </div>}    
+      
+       
+     
+
+
+
+
+
+
+
   </div>)
 }
 
