@@ -10,6 +10,9 @@ import Cart from './pages/Cart';
 import Home from './pages/Home';
 import SingleProduct from './pages/SingleProduct';
 import Categories from './pages/admin/Categories';
+import Shops from './pages/Map';
+import CarouselGalery from './pages/admin/CarouselPic';
+import NotFound from './pages/NotFound';
 
 
 function App() {
@@ -17,14 +20,17 @@ function App() {
     <div>
       <NavigationBar />
       <Routes>
-        <Route path="" exact element={ <Home /> } />
-        <Route path="ostukorv" exact element={ <Cart /> } />
-        <Route path="toode/:id" exact element={ <SingleProduct />} />
-        <Route path="admin" exact element={ <AdminHome />} />
-        <Route path="admin/lisa" exact element={ <AddProduct />} />
-        <Route path="admin/muuda/:id" exact element={ <EditProducts />} />
-        <Route path="admin/tooted" exact element={ <ViewProducts />} />
-        <Route path="admin/kategooriad" exact element={ <Categories />} />
+        <Route path="/" exact element={ <Home /> } />
+        <Route path="/poed" exact element={ <Shops /> } />
+        <Route path="/ostukorv" exact element={ <Cart /> } />
+        <Route path="/toode/:productId" exact element={ <SingleProduct />} />
+        <Route path="/admin" exact element={ <AdminHome />} />
+        <Route path="/admin/lisa" exact element={ <AddProduct />} />
+        <Route path="/admin/muuda/:id" exact element={ <EditProducts />} />
+        <Route path="/admin/tooted" exact element={ <ViewProducts />} />
+        <Route path="/admin/kategooriad" exact element={ <Categories />} />
+        <Route path="/admin/karusellgalerii" exact element={ <CarouselGalery />} />
+        <Route path="*" exact element={ <NotFound />} />
       </Routes>
 
     

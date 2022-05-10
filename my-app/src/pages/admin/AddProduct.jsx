@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "react-bootstrap";
+import FileUpload from "../../components/FileUpload";
 
 function AddProduct() {
     const idRef = useRef();
@@ -14,6 +15,7 @@ function AddProduct() {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [idNotUnique, setIdNotUnique] = useState(false);
+    const [pictureURL, setPictureUrl] = useState(null);
    
 
     useEffect(() => {
@@ -46,14 +48,14 @@ function AddProduct() {
           "category": categoryRef.current.value,
           "description": descriptionRef.current.value,
           "id": Number(idRef.current.value),
-          "imgSrc": imgSrcRef.current.value,
+          "imgSrc": pictureURL,
           "isActive": activeRef.current.value,
           "name": nameRef.current.value,
           "price": Number(priceRef.current.value)
         }
       
 
-      fetch(dbUrl,{
+      fetch(dbUrl + "/products.json",{
           "method": "POST",
           "body": JSON.stringify(newProduct),
           "headers": {"Content-Type": "application/json"}
@@ -82,7 +84,8 @@ return (
     <label>Hind</label> <br />
     <input ref={priceRef} type="number" required /> <br />
     <label>Pilt</label> <br />
-    <input ref={imgSrcRef} type="text" required /> <br />
+    < FileUpload onSendPictureUrl={setPictureUrl} />
+    {/* <input ref={imgSrcRef} type="text" required /> <br /> */}
     <label>Kategooria</label> <br />
     {/*<input ref={categoryRef} type="text" required /> <br /> */}
     <select ref={categoryRef}>

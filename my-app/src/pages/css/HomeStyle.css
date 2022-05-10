@@ -8,3 +8,8 @@
     min-height: 200px;
     background-color: #eee;
   }
+
+  .home-page {
+    display: flex;
+    flex-wrap: wrap;
+}

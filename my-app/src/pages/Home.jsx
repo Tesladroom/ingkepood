@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
-import { Row } from "react-bootstrap";
 import { ToastContainer, toast } from 'react-toastify';
 import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import SortButtons from "../components/SortButtons";
+import CarouselGallery from "../components/CarouselGallery";
+import { cartSumService} from "../store/cartSumService";
+
+
 
 
 function Home() {
@@ -40,50 +45,30 @@ function Home() {
             position: "bottom-right",
             theme: "dark"
         });
+        let totalSum = 0;
+        cartProducts.forEach(element => totalSum = totalSum + element.product.price * element.quantity);
+        cartSumService.sendCartSUm(totalSum);
     }
-
-    function onSortAZ() {
-        products.sort((a,b) => a.name.localeCompare(b.name));
-        setProducts(products.slice());
-    }
-
-    function onSortZA() {
-        products.sort((a,b) => b.name.localeCompare(a.name));
-        setProducts(products.slice());
-    }
-
-    function onSortPriceAsc() {
-       
-        products.sort((a,b) =>a.price- b.price);
-        setProducts(products.slice());
-    }
-
-    function onSortPriceDesc() {
-       
-        products.sort((a, b)=>b.price-a.price);
-        setProducts(products.slice());
-    }
-
-
-
-
-
-    return (
+        return (
     // näitab toodet esilehel
     <div>
-        
-        <Button onClick={() => onSortAZ()}>Sorteeri A-Z</Button>
-        <Button onClick={() => onSortZA()}>Sorteeri Z-A</Button>
-        <Button onClick={() => onSortPriceAsc()}>Sorteeri hind kasvavalt</Button>
-        <Button onClick={() => onSortPriceDesc()}>Sorteeri hind kahanevalt</Button><br />
+        <CarouselGallery />
+        <div className="keskel1">
+        <SortButtons homeProducts={products} onSetProducts={setProducts}  />
+        </div>
         { isLoading && <div className="spinner-wrapper">
         <div className="lds-hourglass"><div></div><div></div></div>
     </div>}
+    
+
+    
         {products.map(element =>
-            <div class="grid">
+            <div className="keskel">
+                <Link to={"/toode/" + element.name.replaceAll(" ", "-").toLowerCase()}>
                <img className="product-img" src={element.imgSrc} alt="" /> 
                <div>{element.name}</div>
                <div>{Number(element.price).toFixed(2)}</div>
+               </Link>
                <Button onClick={() => addToCart(element)}>Lisa {element.name} ostukorvi</Button>
                </div> )}
                

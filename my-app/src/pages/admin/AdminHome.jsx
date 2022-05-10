@@ -13,6 +13,9 @@ function AdminHome() {
         <Link to="/admin/kategooriad">
         <Button className="btn btn-secondary">KATEGOORIAD</Button>
         </Link>
+        <Link to="/admin/karusellgalerii">
+        <Button className="btn btn-secondary">KARUSELL GALERII</Button>
+        </Link>
     </div>)
     
     

@@ -89,3 +89,63 @@ body{
     transform: rotate(1800deg);
   }
 }
+
+.map {
+height: 500px;
+width: 500px;
+text-align: center;
+    display: block;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+
+
+}
+
+.slick-slider {
+  margin-bottom: 100px;
+  width: 50%;
+  margin-left: 20%;
+}
+
+.slick-prev:before, .slick-next:before {
+  color: black !important;
+
+}
+
+.kaart {
+  text-align: center;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  width: 100%;
+  
+
+}
+
+.keskel {
+  text-align: center;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+
+
+}
+
+.keskel1 {
+text-align: center;
+
+
+
+
+}
+
+.not-found-content {
+  margin-top: 100px;
+text-align: center;
+font-size: 60px;
+
+
+}
