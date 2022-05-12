@@ -16,6 +16,9 @@ function AdminHome() {
         <Link to="/admin/karusellgalerii">
         <Button className="btn btn-secondary">KARUSELL GALERII</Button>
         </Link>
+        <Link to="/admin/lisa-kasutaja">
+        <Button className="btn btn-secondary">LISA KASUTAJA</Button>
+        </Link>
     </div>)
     
     

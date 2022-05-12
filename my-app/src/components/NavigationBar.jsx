@@ -2,7 +2,8 @@ import { Container, Nav, Navbar } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { cartSumService } from "../store/cartSumService";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import  AuthContext  from "../store/AuthContext";
 import "./NavigationBar.css";
 
 
@@ -10,6 +11,8 @@ import "./NavigationBar.css";
 function NavigationBar() {
     const { t, i18n } = useTranslation();
     const [cartSum, setCartSum] = useState(0);
+    const ctx = useContext(AuthContext);
+    // console.log(ctx.loggedIn);
 
     function changeLanguage(newLanguage) {
         i18n.changeLanguage(newLanguage);
@@ -17,11 +20,18 @@ function NavigationBar() {
     }
 
     cartSumService.getCartSum().subscribe(cartSumFromObs => setCartSum(cartSumFromObs))
+
+    function logout() {
+      sessionStorage.removeItem("userData");
+    }
+    
     return (
         <Navbar bg="light" variant="light">
         <Container>
         <Navbar.Brand as={Link} to="/"> <img src="/Chikar.png" alt="" /> </Navbar.Brand>
         <Nav className="me-auto">
+           <Nav.Link as={Link} to="/admin/logi-sisse">Logi Sisse</Nav.Link>
+           <Nav.Link onClick={() => logout()}>Logi välja</Nav.Link>
           <Nav.Link as={Link} to="/admin">{t('nav-admin-button')}</Nav.Link>
           <Nav.Link as={Link} to="/poed">Poed</Nav.Link>
           <Nav.Link as={Link} to="/ostukorv">{t('nav-cart-button')}</Nav.Link>
