@@ -30,9 +30,9 @@ function NavigationBar() {
         <Container>
         <Navbar.Brand as={Link} to="/"> <img src="/Chikar.png" alt="" /> </Navbar.Brand>
         <Nav className="me-auto">
-           <Nav.Link as={Link} to="/admin/logi-sisse">Logi Sisse</Nav.Link>
-           <Nav.Link onClick={() => logout()}>Logi välja</Nav.Link>
-          <Nav.Link as={Link} to="/admin">{t('nav-admin-button')}</Nav.Link>
+           { ctx.loggedIn === false && <Nav.Link as={Link} to="/logi-sisse">Logi sisse</Nav.Link>}
+           { ctx.loggedIn === true && <Nav.Link onClick={() => logout()}>Logi välja</Nav.Link>}
+           { ctx.loggedIn === true && <Nav.Link as={Link} to="/admin">{t('nav-admin-button')}</Nav.Link>}
           <Nav.Link as={Link} to="/poed">Poed</Nav.Link>
           <Nav.Link as={Link} to="/ostukorv">{t('nav-cart-button')}</Nav.Link>
           <div>Kokku ostukorvis:{cartSum.toFixed(2)}€</div>

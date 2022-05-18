@@ -12,8 +12,8 @@ export const AuthContextProvider = (props) => {
     function getLoggedInStatus() {
         if (sessionStorage.getItem("userData")) {
             const userData = JSON.parse(sessionStorage.getItem("userData"));
-            if (new Date(userData.expires).getTime() < (new Date()).getTime()) {
-                return false;
+            if (new Date(userData.expires).getTime() > (new Date().getTime())) {
+                return true;
         } else {
             return false;
         }

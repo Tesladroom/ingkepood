@@ -1,5 +1,6 @@
 import {useRef} from "react";
 import { Button } from "react-bootstrap";
+import { ToastContainer, toast } from 'react-toastify';
 
 
 function SignUp() {
@@ -31,7 +32,11 @@ function onSignUp() {
                 token: body.idToken,
                 expires: expirationDate
             }
-            sessionStorage.setItem("userData", JSON.stringify(userData))
+            sessionStorage.setItem("userData", JSON.stringify(userData));
+            toast.success("Edukalt lisatud uus kasutaja!", {
+                position: "bottom-right",
+                theme: "dark"
+            });
 
             
         });
@@ -45,6 +50,7 @@ function onSignUp() {
         <label>Parool</label> <br />
         <input ref={passwordRef} type="text" /> <br />
         <Button onClick={() => onSignUp()}>Registreeri</Button>
+        <ToastContainer/>
         </div>)
 }
 
