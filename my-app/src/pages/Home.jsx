@@ -1,18 +1,23 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import SortButtons from "../components/SortButtons";
+import AuthContext from "../store/AuthContext";
 import CarouselGallery from "../components/CarouselGallery";
 import { cartSumService} from "../store/cartSumService";
+import "./css/Home.css";
 
 
 
 
 function Home() {
     const [products, setProducts] = useState([]);
+    const [originalProducts, setOriginalProducts] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const url = "https://chikar-20c2b-default-rtdb.europe-west1.firebasedatabase.app/products.json"
+    const authCtx = useContext(AuthContext);
 
     useEffect(() => {
         setIsLoading(true);
@@ -23,6 +28,9 @@ function Home() {
             productsFromDb.push(responseBody[key]);
           }
           setProducts(productsFromDb);
+          setOriginalProducts(productsFromDb);
+          const categoriesFromProducts = [... new Set(productsFromDb.map(element => element.category))];
+          setCategories(categoriesFromProducts);
           setIsLoading(false);
         })
       },[]);
@@ -71,16 +79,37 @@ function Home() {
         cartProducts.forEach(element => totalSum += element.product.price * element.quantity);
         cartSumService.sendCartSum(totalSum);
       }
+
+      const onSelectCategory = (category) => {
+        if (category === 'all') {
+          setProducts(originalProducts);
+          setSelectedCategory('all')
+        } else {
+          setProducts(originalProducts.filter(element => element.category === category));
+          setSelectedCategory(category);
+        }
+      }
     
+      const [selectedCategory, setSelectedCategory] = useState('all');
+
       return (
       <div className="keskel">
         <CarouselGallery />
+        <div className={selectedCategory === 'all' && 'bold'} onClick={() => onSelectCategory('all')}>Kõik kategooriad</div>
+    { categories.map(element => //['drones', 'cameras']       'drones'
+      <div 
+        onClick={() => onSelectCategory(element)} 
+        className={selectedCategory === element && 'bold'}>
+          {element}
+      </div>) }
         <SortButtons homeProducts={products} onSetProducts={setProducts} />
         { isLoading && <div className="spinner-wrapper">
           <div className="lds-ripple"><div></div><div></div></div>
         </div>}
-        {products.filter(element => element.isActive).map(element => 
-          <div>
+        {products.filter(element => element.isActive || authCtx.loggedIn).map(element => 
+      <div className={`product 
+            ${element.isActive && authCtx.loggedIn && 'active'} 
+            ${!element.isActive && authCtx.loggedIn && 'inactive'}`}>
             <img className="product-img" src={element.imgSrc} alt="" />
             <div>{element.name}</div>
             <div>{Number(element.price).toFixed(2)}</div>

@@ -153,3 +153,7 @@ font-size: 60px;
 .admin-picture {
   width: 100px;
 }
+
+.bold {
+  font-weight: bold;
+}
